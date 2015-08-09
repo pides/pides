@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('myCanvas'),
+    ctx = canvas.getContext('2d');
+    console.log(ctx);
+    ctx.shadowColor = "rgba(50,10,10,10)"
+    ctx.fillStyle='#ff0000';
+    ctx.fillRect(0,0,90,100)
+
+</script>
+</html>

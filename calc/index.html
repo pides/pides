@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'/>
+	<title></title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	a{
+		text-decoration: none;
+	}
+	ul,li{
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+		float: left;
+	}
+	.pointer{
+		cursor:pointer;
+	}
+	#calc{
+		width: 200px;
+		margin: 0 auto;
+		margin-top: 50px;
+		border:3px solid #ccc;
+	}
+	.calc_head{
+		width: 100%;
+		float:left;
+	}
+	.calc_head .title{
+		margin-left: 10px;
+		font-size: 10px;
+	}
+	.calc_head span{
+		display: block;
+		text-align: right;
+		margin-right: 15px
+	}
+	.calc_head .list{
+		color: #ccc
+	}
+	.calc_head .count{
+		font-weight: bold;
+		font-size: 25px;
+	}
+	.calc_body{
+		width: 100%;
+		float: left
+	}
+	.calc_body li {
+		display: inline-block;
+		text-align: center;
+		width: 50px;
+		height: 50px;
+		line-height: 50px;
+	}
+	.calc_body li a{
+		color: black;
+		display: inline-block;
+	}
+
+
+	</style>
+	<script type="text/javascript">
+
+	if(!document.getElementsByClassName){ 
+		document.getElementsByClassName = function(className, element){ 
+			var children = (element || document).getElementsByTagName('*'); 
+			var elements = new Array(); 
+			for (var i=0; i<children.length; i++){ 
+				var child = children[i]; 
+				var classNames = child.className.split(' '); 
+				for (var j=0; j<classNames.length; j++){ 
+					if (classNames[j] == className){ 
+						elements.push(child); 
+						break; 
+					} 
+				} 
+			} 
+			return elements; 
+		}; 
+	}
+
+	!function(window){
+		function $(el,par){
+    	var indexOf= el.indexOf('.');
+		if(indexOf>-1){
+			dd = el.substr(indexOf+1,10);
+			return document.getElementsByClassName(dd,par);
+		}
+		return document.getElementById(el);
+	}
+	window.onload = function(){
+		
+		var calc = $('calc'),pointer = $('.pointer',calc), sum = $('.count',calc),list = $('.list',calc),last = '',isCount = !1,lastSum = '',playObj = $('play'),
+		 nums = {
+		 CE:function(){
+		 	if(isCount){
+		 		nums['C']();
+		 		return;
+		 	}
+		 	sum[0].innerHTML = 0;
+		 },
+		 C:function(){
+		 	lastSum = '';
+		 	list[0].innerHTML = 0;
+		 	sum[0].innerHTML = 0;
+		 	isCount = !1;
+		 },
+		 backSpace:function(){
+		 	if(isCount){
+		 		nums['C']()
+		 		return;
+		 	}
+		 	var val  = sum[0].innerHTML.substr(0,sum[0].innerHTML.length-1);
+		 	sum[0].innerHTML = val ? val : 0;
+		 	isCount = !1;
+		 },
+		 point:function(num){
+		 	if(isCount){
+		 		nums['C']();
+		 	}
+		 	if(num.indexOf('.')>-1)return;
+		 	sum[0].innerHTML+='.';
+		 	playMp3('.');
+		 },
+		 count:function(){
+				playMp3('=');
+		 	if(list[0].innerHTML == 0){
+		 		return;
+		 	}
+		 	if(isCount){
+		 		list[0].innerHTML += lastSum;
+		 	}else{
+		 		lastSum = last + sum[0].innerHTML;
+		 		list[0].innerHTML += sum[0].innerHTML;
+		 	}
+		 	sum[0].innerHTML = eval(list[0].innerHTML);
+		 	isCount = !0;
+		 }};
+
+
+
+		 function playMp3(v){
+			switch(v){
+				case '*':
+					v = '乘';
+					break;
+				case '/':
+					v = '除';
+					break;
+				case '+':
+					v = '加';
+					break;
+				case '-':
+					v = '减';
+					break;
+				case '=':
+					v = '等于';
+					break;
+				case '.':
+					v = '点';
+					break;
+			}
+			var play = '<object height="100" width="100" data="./MP3/' + v + '.mp3"></object>'
+				playObj.innerHTML = play;
+		}
+
+
+		for(var i = 0; i<pointer.length;i++){
+			pointer[i].addEventListener('mousedown',function(){
+				var val = this.getElementsByTagName('a')[0].innerHTML,v = sum[0].innerHTML,point = v.indexOf('.');
+				
+				this.style.backgroundColor = '#ccc'
+
+				switch(val){
+					case '←':
+						val = 'backSpace';
+						break;
+					case '=':
+						val = 'count';
+						break;
+					case '.':
+						val = 'point';
+						break;
+				}
+
+				if(nums[val] && typeof nums[val] == 'function'){
+					nums[val](v);
+					return;
+				}
+
+
+				if(isNaN(parseInt(val))){
+					var listVal = list[0].innerHTML;
+					if(point>-1 && v.length == point+1)v = v.substr(0,point)
+					list[0].innerHTML = listVal == 0 ? '' : listVal ;	
+					list[0].innerHTML = list[0].innerHTML + v + val
+					sum[0].innerHTML = 0
+					last = val;
+					playMp3(val);
+					return;
+				}
+
+				if(isCount){
+		 			nums['C']();
+		 		}
+				if(sum[0].innerHTML == 0 && point===-1){
+					sum[0].innerHTML = ''
+				}
+				playMp3(val);
+				sum[0].innerHTML = sum[0].innerHTML + '' + val;
+	
+				
+			},false)
+
+
+			pointer[i].addEventListener('mouseup',function(){
+				this.style.backgroundColor = '#fff'
+			},false)
+		}
+	}
+	}(window)
+	
+    
+	</script>
+</head>
+<body>
+	<div class="" id="calc">
+		<div class="calc_head">
+			<label class="title">计算器</label>
+			<span class='list'>0</span>
+			<span class='count'>0</span>
+		</div>
+		<div class="calc_body">
+			<ul>
+				<li class="pointer"><a href="javascript:;" >CE</a></li>
+				<li class="pointer"><a href="javascript:;" >C</a></li>
+				<li class="pointer"><a href="javascript:;" >←</a></li>
+				<li class="pointer"><a href="javascript:;" >/</a></li>
+				<li class="pointer"><a href="javascript:;" >7</a></li>
+				<li class="pointer"><a href="javascript:;" >8</a></li>
+				<li class="pointer"><a href="javascript:;" >9</a></li>
+				<li class="pointer"><a href="javascript:;" >*</a></li>
+				<li class="pointer"><a href="javascript:;" >4</a></li>
+				<li class="pointer"><a href="javascript:;" >5</a></li>
+				<li class="pointer"><a href="javascript:;" >6</a></li>
+				<li class="pointer"><a href="javascript:;" >-</a></li>
+				<li class="pointer"><a href="javascript:;" >1</a></li>
+				<li class="pointer"><a href="javascript:;" >2</a></li>
+				<li class="pointer"><a href="javascript:;" >3</a></li>
+				<li class="pointer"><a href="javascript:;" >+</a></li>
+				<li class="pointer"><a href="javascript:;" ></a></li>
+				<li class="pointer"><a href="javascript:;" >0</a></li>
+				<li class="pointer"><a href="javascript:;" >.</a></li>
+				<li class="pointer"><a href="javascript:;" >=</a></li>
+			</ul>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+	<div id="play" style="position:fixed;left: 99999999px;"></div>
+</body>
+</html>
