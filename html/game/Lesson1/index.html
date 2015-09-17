@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>testeasel</title>
+	<script src="../../ext/createjs.js"></script>
+</head>
+<body>
+<canvas id="cv" width="500" height="500" style="background-color: antiquewhite">
+
+</canvas>
+</body>
+	<script type="text/javascript">
+		var Stage = new createjs.Stage('cv');
+		var c = new createjs.Container();
+		var x = 0;
+		var y = 0;
+//		var bitmap = new createjs.Bitmap("69246109.jpg");
+		/*Stage.addChild(bitmap);
+		createjs.Ticker.addEventListener("tick", handleTick);
+		function handleTick(event) {
+				bitmap.x += 10;
+			Stage.update();
+		}*/
+		function createGraphics(){
+			var graphics = new createjs.Graphics().beginFill('#FF0000').drawRect(x,y,100,100);
+			x += 100;
+			var Shape = new createjs.Shape(graphics);
+			Shape.alpha = 0.5;
+			c.addChild(Shape);
+			Stage.addChild(c);
+		}
+		for(var i = 1;i<=25;i++){
+			createGraphics();
+			if(!(i%5)){
+				y += 100;
+				x = 0;
+			}
+			Stage.update();
+		}
+		Stage.update();
+	</script>
+</html>
