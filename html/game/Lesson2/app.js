@@ -2,30 +2,43 @@
  * Created by 永亮 on 2015/9/15.
  */
 
-
-
-!function(window){
-    window.onload = gameLoad();
-    var canvas, stage;
-    function gameLoad() {
-        //获取画布
-        canvas = document.getElementById('canvas');
-        //创建场景
-        stage = new createjs.Stage(canvas);
-        var text = new createjs.Text('欢迎光临','36px Arial','#fff');
-        text.x = 1000;
-        text.y = 400;
-        stage.addChild(text);
-
-        var shape = new createjs.Shape();
-
-        shape.graphics.clear().beginFull('#f00').drawRect(-10,-10,text.getMeasuredWidth()+20,50);
-        shape.x = text.x;
-        shape.y = text.y;
-        stage.addChildAt(shape,0);
-        createjs.Ticker.setFPS(100);
-        createjs.Ticker.addEventListener('tick',function(){
-            stage.update();
-        });
-    }
+!function (window) {
+  window.onload = gameLoad();
+  var canvas, stage, top, menu, content;
+  function gameLoad(e) {
+    //获取画布
+    canvas = document.getElementById('canvas');
+    //创建场景
+    stage = new createjs.Stage(canvas);
+    top = new createjs.Container();
+    !function(){
+      var graphics = new createjs.Graphics().beginFill("#ff0000").drawRect(0, 0, canvas.width, 30);
+      var shape = new createjs.Shape(graphics);
+      top.addChild(shape);
+      stage.addChild(top);
+    }()
+    menu = new createjs.Container();
+    !function(){
+      var graphics = new createjs.Graphics().beginFill("#ff00ff").drawRect(0, 0, canvas.width, 30);
+      var shape = new createjs.Shape(graphics);
+      menu.y = canvas.height-30;
+      menu.addChild(shape);
+      stage.addChild(menu);
+    }()
+    content = new createjs.Container();
+    !function(){
+      var EZ = document.createElement('img');
+      EZ.src = 'bg.png';
+      EZ.onload = function(e){
+        var graphics = new createjs.Graphics().beginBitmapFill(EZ).drawRect(0, 0, canvas.width, canvas.height-60);
+        var shape = new createjs.Shape(graphics);
+        content.y = 30;
+        content.addChild(shape);
+        stage.addChild(content);
+        stage.update(e);
+      }
+    }();
+    stage.update(e);
+    console.log(stage)
+  }
 }(window);
