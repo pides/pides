@@ -67,7 +67,7 @@
         alert('士兵');
       }},
         //装备
-      {x:873, y:145,callback:function(){
+      {x:873, y:144,callback:function(){
         alert('装备');
       }},
       //排行'
@@ -75,11 +75,11 @@
         alert('排行');
       }},
         //成就
-      {x:701, y:223,callback:function(){
+      {x:701, y:222,callback:function(){
         alert('成就');
       }},
       //商店
-      {x:946, y:145,callback:function(){
+      {x:946, y:144,callback:function(){
         alert('商店');
       }}
     ];
