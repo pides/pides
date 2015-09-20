@@ -5,8 +5,9 @@
 
 !function (window, id) {
   var stage, canvas,
-      menuX = 7,
-      menuHeight = 100;
+      menuX = 2,
+      menuHeight = 100,
+      menuBtnOffset = 6.5;
   function stage(t) {
     this.t = t;
     this.init();
@@ -19,9 +20,15 @@
       this.stageHeight = parseFloat(this.t.height);
       this.Stage = new createjs.Stage(this.t);
       this._bindEvent();
+      this.reSetSize();
     },
     reSetSize: function () {
       var client = this._getClient();
+      if(this.stageHeight>client.height){
+        this.stageHeight = this.t.height = client.height;
+        console.log(this.t.parentNode);
+        this.t.parentNode.style.height = client.height + 'px';
+      }
     },
     _getClient: function () {
       var client = document.documentElement;
@@ -50,7 +57,7 @@
   menu.addChild(menuShape);
   menuShape.id = 'menu';
   menuShape.alpha = 0.3;
-  menuShape.graphics.beginFill('#000').drawRoundRect (0,0,stage.stageWidth-menuX*2,menuHeight,20);
+  menuShape.graphics.beginFill('#000').drawRoundRect (0,0,stage.stageWidth-menuX*2,menuHeight,15);
   menu.x = menuX;
   menu.y = stage.stageHeight-menuHeight-5;
   var menuBtn = new Image();
@@ -89,7 +96,7 @@
       var _thisBtn = menuBtn.clone();
       _thisBtn.sourceRect = rect;
       _thisBtn.y = menuHeight /2 - (72/2);
-      _thisBtn.x = 5*(i+1) + (i*72);
+      _thisBtn.x = parseInt(menuBtnOffset*(i+1) + (i*72));
       _thisBtn.callback = btn[i].callback;
       menu.addChild(_thisBtn);
     }
@@ -108,6 +115,3 @@
   });
   createjs.Ticker.addEventListener('tick', stage.Stage)
 }(window, 'canvas');
-window.onbeforeunload  = function(){
-  alert(1)
-}
