@@ -5,8 +5,8 @@
 
 !function (window, id) {
   var stage, canvas,
-      menuX = 2,
-      menuHeight = 100,
+      guide = 2,
+      guideHeight = 80,
       menuBtnOffset = 6.5;
   function stage(t) {
     this.t = t;
@@ -51,15 +51,25 @@
   stage = new stage(canvas);
   var count = 0;
   var text = new createjs.Text('已点击 …… ' + count, '36px Arial', '#f00');
-  var textShape = stage.createShape();
+  text.y = 200;
+  var top = new createjs.Container();
+  var userInfo = stage.createShape();
+  top.addChild(userInfo);
+  userInfo.alpha = 0.3;
+  userInfo.graphics.beginFill('#000').drawRoundRect (0,0,stage.stageWidth-guide*2,guideHeight,15);
+  top.x = guide;
+  stage.Stage.addChild(top);
+
+
+
   var menu = new createjs.Container();
   var menuShape = stage.createShape();
   menu.addChild(menuShape);
   menuShape.id = 'menu';
   menuShape.alpha = 0.3;
-  menuShape.graphics.beginFill('#000').drawRoundRect (0,0,stage.stageWidth-menuX*2,menuHeight,15);
-  menu.x = menuX;
-  menu.y = stage.stageHeight-menuHeight-5;
+  menuShape.graphics.beginFill('#000').drawRoundRect (0,0,stage.stageWidth-guide*2,guideHeight,15);
+  menu.x = guide;
+  menu.y = stage.stageHeight-guideHeight-5;
   var menuBtn = new Image();
   menuBtn.src = 'common.png';
   menuBtn.onload = function(){
@@ -95,7 +105,7 @@
       rect = new createjs.Rectangle(btn[i].x,btn[i].y,72,72);
       var _thisBtn = menuBtn.clone();
       _thisBtn.sourceRect = rect;
-      _thisBtn.y = menuHeight /2 - (72/2);
+      _thisBtn.y = guideHeight /2 - (72/2);
       _thisBtn.x = parseInt(menuBtnOffset*(i+1) + (i*72));
       _thisBtn.callback = btn[i].callback;
       menu.addChild(_thisBtn);
@@ -104,8 +114,10 @@
       if(e.target.callback)e.target.callback();
     })
   };
-
+  var textShape = stage.createShape();
   textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
+  textShape.y = text.y;
+  textShape.x = text.x;
   stage.Stage.addChild(menu);
   stage.Stage.addChild(textShape);
   stage.Stage.addChild(text);
