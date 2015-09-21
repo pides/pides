@@ -26,7 +26,7 @@
       var client = this._getClient();
       if(this.stageHeight>client.height){
         this.stageHeight = this.t.height = client.height;
-        console.log(this.t.parentNode);
+        alert(client.width);
         this.t.parentNode.style.height = client.height + 'px';
       }
     },
