@@ -149,7 +149,7 @@
       _thisBtn.callback = btn[i].callback;
       menu.addChild(_thisBtn);
     }
-    menu.addEventListener('touch', function (e) {
+    menu.addEventListener('click', function (e) {
       if (e.target.callback)e.target.callback();
     })
   };
