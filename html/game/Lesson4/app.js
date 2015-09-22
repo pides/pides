@@ -91,37 +91,48 @@
       //勇士
       {
         x: 802, y: 146, callback: function () {
-        alert('勇士');
+        text.text = '已点击 …勇士… ' + (++count);
+        textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
       }
       },
       //士兵
       {
         x: 934, y: 72, callback: function () {
-        alert('士兵');
+        text.text = '已点击 …士兵… ' + (++count);
+        textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
+
       }
       },
       //装备
       {
         x: 873, y: 144, callback: function () {
-        alert('装备');
+        text.text = '已点击 …装备… ' + (++count);
+        textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
+
       }
       },
       //排行'
       {
         x: 934, y: 0, callback: function () {
-        alert('排行');
+        text.text = '已点击 …排行… ' + (++count);
+        textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
+
       }
       },
       //成就
       {
         x: 701, y: 222, callback: function () {
-        alert('成就');
+        text.text = '已点击 …成就… ' + (++count);
+        textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
+
       }
       },
       //商店
       {
         x: 946, y: 144, callback: function () {
-        alert('商店');
+        text.text = '已点击 …商店… ' + (++count);
+        textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
+
       }
       }
     ];
@@ -150,7 +161,6 @@
   stage.Stage.addChild(textShape);
   stage.Stage.addChild(text);
   menu.addEventListener('click', function (e) {
-    text.text = '已点击 …… ' + (++count);
     textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
   });
   createjs.Ticker.addEventListener('tick', stage.Stage)
