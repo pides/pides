@@ -161,5 +161,7 @@
   stage.Stage.addChild(textShape);
   stage.Stage.addChild(text);
   createjs.Ticker.addEventListener('tick', stage.Stage)
-}
-(window, 'canvas');
+}(window, 'canvas');
+window.addEventListener('touchmove', function (event) {
+  event.preventDefault();
+});
