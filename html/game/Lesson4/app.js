@@ -149,7 +149,7 @@
       _thisBtn.callback = btn[i].callback;
       menu.addChild(_thisBtn);
     }
-    menu.addEventListener('click', function (e) {
+    menu.addEventListener('touch', function (e) {
       if (e.target.callback)e.target.callback();
     })
   };
@@ -160,9 +160,6 @@
   stage.Stage.addChild(menu);
   stage.Stage.addChild(textShape);
   stage.Stage.addChild(text);
-  menu.addEventListener('click', function (e) {
-    textShape.graphics.beginFill('#ff0').drawRect(-10, -10, text.getMeasuredWidth() + 10, text.getMeasuredHeight() + 10);
-  });
   createjs.Ticker.addEventListener('tick', stage.Stage)
 }
 (window, 'canvas');
