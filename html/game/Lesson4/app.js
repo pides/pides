@@ -70,7 +70,6 @@
     addChildToContainer: function (child, target, index) {
       target = this[target + 'Container'];
       target.addChild(child);
-      console.log(target);
       if (index)target.setChildIndex(child, index);
       return this;
     },
@@ -98,21 +97,66 @@
   //TODO bottom
   //图片草地对象
   var mapFg = new createjs.Bitmap('map_fg.jpg');
-  mapFg.y = 600;
+  mapFg.y = 550 * stage.multiple;
+  mapFg.scaleX = mapFg.scaleY = stage.multiple;
+
   //将图片 草地 添加入 底层容器
   stage.addChildToContainer(mapFg, 'bottom', 0);
+  //引入层数
+  var taNum = new createjs.Bitmap('num.png');
+  var numOffset = [
+    {
+      x: 0, y: 0
+    },
+    {
+      x: 101.6, y: 0
+    },
+    {
+      x: 50.8, y: 30
+    },
+    {
+      x: 101.6, y: 30
+    },
+    {
+      x: 25.4, y: 30
+    },
+    {
+      x: 76.2, y: 0
+    },
+    {
+      x: 25.4, y: 0
+    },
+    {
+      x: 76.2, y: 30
+    },
+    {
+      x: 50.8, y: 0
+    },
+    {
+      x: 0, y: 30
+    }
+  ];
 //插入塔
-  for (var i = 0; i < 200; i++) {
-    var ta = stage.getSourceRect(common, 123, 354, 466, 105);
-    ta.x = 9;
-    ta.y = mapFg.y - (105 * (i + 1));
+  var ta,i, s,numLength,numLengthOffset,numObj,numberOffset,l;
+
+  for (i = 0; i < 1000; i++) {
+    ta = stage.getSourceRect(common, 123, 354, 466, 105);
     stage.addChildToContainer(ta, 'bottom', 0);
+    ta.x = 9 * stage.multiple;
+    s = (1+i + '');
+    numLength = s.length;
+    numberOffset = ta.x + 466 / 2 - (25.4 * numLength);
+    ta.y = mapFg.y - (104 * (i + 1)) * stage.multiple;
+    for(l = 0; l<numLength; l++){
+      numLengthOffset = numOffset[s[l]];
+      numObj = stage.getSourceRect(taNum,numLengthOffset.x,numLengthOffset.y,25.4,30);
+      numObj.x = (numberOffset + (l*25.4))* stage.multiple;
+      numObj.y = ta.y + 35 * stage.multiple;
+      numObj.scaleX = numObj.scaleY = 1.5*stage.multiple;
+      stage.addChildToContainer(numObj, 'bottom', 9);
+    }
+    ta.scaleX = ta.scaleY = stage.multiple;
   }
-  //TODO 测试点击事件对象
-  var count = 0;
-  var text = new createjs.Text('已点击 …… ' + count, '36px Arial', '#f00');
-  text.y = 200;
-  stage.bottomContainer.addChild(text);
 
   //TODO top
   //设置top x位置
@@ -120,25 +164,26 @@
   //创建top遮层
   var topMask = stage.createShape();
   topMask.alpha = 0.3;
-  topMask.graphics.beginFill('#000').drawRoundRect(0, 0, stage.stageWidth - guide * 2, 95, 15);
+  topMask.graphics.beginFill('#000').drawRoundRect(0, 0, stage.stageWidth - guide * 2, 95 * stage.multiple, 15);
   stage.addChildToContainer(topMask, 'top', 1);
 
   //用户头像
   var photo = new createjs.Bitmap('photo.jpg');
-  photo.x = 21;
-  photo.y = 18;
-  photo.scaleX = photo.scaleY = 0.3;
+  photo.x = 20 * stage.multiple;
+  photo.y = 15 * stage.multiple;
+  photo.scaleX = photo.scaleY = (0.33 * stage.multiple);
   stage.addChildToContainer(photo, 'top', 2);
 
   //用户详情界面图
   var infoBg = new createjs.Bitmap('info_bg.png');
   infoBg.x = 3;
+  infoBg.scaleX = infoBg.scaleY = stage.multiple;
   stage.addChildToContainer(infoBg, 'top', 3);
 //用户头右下角问号
   var question = stage.getSourceRect(common, 590, 432, 48, 48);
-  question.x = 60;
-  question.y = 55;
-  question.scaleX = question.scaleY = 0.7;
+  question.x = 60 * stage.multiple;
+  question.y = 55 * stage.multiple;
+  question.scaleX = question.scaleY = (0.7 * stage.multiple);
   stage.addChildToContainer(question, 'top', 4);
 
   //TODO down
