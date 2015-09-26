@@ -15,10 +15,33 @@
     return this;
   }
 
-var timer,mY;
-  function goto(target,e){
-
+  function isPC()
+  {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+      if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }
+    }
+    return flag;
   }
+  var touchEvents = {
+    touchstart: "touchstart",
+    touchmove: "touchmove",
+    touchend: "touchend",
+
+    /**
+     * @desc:判断是否pc设备，若是pc，需要更改touch事件为鼠标事件，否则默认触摸事件
+     */
+    initTouchEvents: function () {
+      if (isPC()) {
+        this.touchstart = "mousedown";
+        this.touchmove = "mousemove";
+        this.touchend = "mouseup";
+      }
+    }
+  };
+  touchEvents.initTouchEvents();
   stage.prototype = {
     _maxStageWidth: 480,
     multiple: 1,
@@ -108,13 +131,15 @@ var timer,mY;
   var mouseDown = false;
   var bottomY = 0;
   var mouseY;
-  canvas.addEventListener('mousedown',function(e){
+  var mY;
+  canvas.addEventListener(touchEvents.touchstart,function(e){
     bottomY = bottom.y;
     mouseY = e. pageY;
     mouseDown = true;
   });
   var bottomHeight,BY;
-  canvas.addEventListener('mousemove',function(e){
+  canvas.addEventListener(touchEvents.touchmove,function(e){
+    alert(1)
     if(!mouseDown)return;
     mY = mouseY- e. pageY;
     BY = bottomY+mY;
@@ -126,7 +151,7 @@ var timer,mY;
     }
     bottom.y =BY;
   });
-  canvas.addEventListener('mouseup',function(){
+  canvas.addEventListener(touchEvents.touchend,function(){
     mouseDown = false;
   });
   window.bottom = bottom;
