@@ -140,7 +140,7 @@
   var bottomHeight,BY;
   canvas.addEventListener(touchEvents.touchmove,function(e){
     if(!mouseDown)return;
-    mY = mouseY- e. pageY;
+    mY = mouseY - e. pageY;
     BY = bottomY+mY;
     if(BY>Math.abs(ta.y)+200){
       BY = Math.abs(ta.y)+200
@@ -299,3 +299,4 @@
     stage.addChildToContainer(_thisBtn, 'down', 2);
   }
 }(window, 'canvas');
+window.ontouchmove =  function (event){ event.preventDefault();};
