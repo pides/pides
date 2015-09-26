@@ -139,7 +139,6 @@
   });
   var bottomHeight,BY;
   canvas.addEventListener(touchEvents.touchmove,function(e){
-    alert(1)
     if(!mouseDown)return;
     mY = mouseY- e. pageY;
     BY = bottomY+mY;
