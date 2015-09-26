@@ -15,6 +15,10 @@
     return this;
   }
 
+var timer,mY;
+  function goto(target,e){
+
+  }
   stage.prototype = {
     _maxStageWidth: 480,
     multiple: 1,
@@ -78,6 +82,9 @@
       obj.setBounds(x, y, w, h);
       obj.sourceRect = obj.getBounds();
       return obj;
+    },
+    getContainer: function (target) {
+      return this[target + 'Container'];
     }
   };
 
@@ -95,6 +102,34 @@
 
 
   //TODO bottom
+
+  //bottom 的拖动事件
+  var bottom = stage.getContainer('bottom');
+  var mouseDown = false;
+  var bottomY = 0;
+  var mouseY;
+  canvas.addEventListener('mousedown',function(e){
+    bottomY = bottom.y;
+    mouseY = e. pageY;
+    mouseDown = true;
+  });
+  var bottomHeight,BY;
+  canvas.addEventListener('mousemove',function(e){
+    if(!mouseDown)return;
+    mY = mouseY- e. pageY;
+    BY = bottomY+mY;
+    if(BY>Math.abs(ta.y)+200){
+      BY = Math.abs(ta.y)+200
+    }
+    if(BY<-100){
+      BY =-100;
+    }
+    bottom.y =BY;
+  });
+  canvas.addEventListener('mouseup',function(){
+    mouseDown = false;
+  });
+  window.bottom = bottom;
   //图片草地对象
   var mapFg = new createjs.Bitmap('map_fg.jpg');
   mapFg.y = 550 * stage.multiple;
@@ -137,27 +172,26 @@
     }
   ];
 //插入塔
-  var ta,i, s,numLength,numLengthOffset,numObj,numberOffset,l;
+  var ta, i, s, numLength, numLengthOffset, numObj, numberOffset, l;
 
-  for (i = 0; i < 1000; i++) {
+  for (i = 0; i < 20; i++) {
     ta = stage.getSourceRect(common, 123, 354, 466, 105);
     stage.addChildToContainer(ta, 'bottom', 0);
     ta.x = 9 * stage.multiple;
-    s = (1+i + '');
+    s = (1 + i + '');
     numLength = s.length;
     numberOffset = ta.x + 466 / 2 - (25.4 * numLength);
     ta.y = mapFg.y - (104 * (i + 1)) * stage.multiple;
-    for(l = 0; l<numLength; l++){
+    for (l = 0; l < numLength; l++) {
       numLengthOffset = numOffset[s[l]];
-      numObj = stage.getSourceRect(taNum,numLengthOffset.x,numLengthOffset.y,25.4,30);
-      numObj.x = (numberOffset + (l*25.4))* stage.multiple;
+      numObj = stage.getSourceRect(taNum, numLengthOffset.x, numLengthOffset.y, 25.4, 30);
+      numObj.x = (numberOffset + (l * 25.4)) * stage.multiple;
       numObj.y = ta.y + 35 * stage.multiple;
-      numObj.scaleX = numObj.scaleY = 1.5*stage.multiple;
-      stage.addChildToContainer(numObj, 'bottom', 9);
+      numObj.scaleX = numObj.scaleY = 1.5 * stage.multiple;
+      stage.addChildToContainer(numObj, 'bottom', 99999);
     }
     ta.scaleX = ta.scaleY = stage.multiple;
   }
-
   //TODO top
   //设置top x位置
   stage.topContainer.x = guide;
