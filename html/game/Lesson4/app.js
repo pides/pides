@@ -141,7 +141,15 @@
   canvas.addEventListener(touchEvents.touchmove,function(e){
     if(!mouseDown)return;
     mY = mouseY - e. pageY;
-    BY = bottomY+mY;
+
+    if(mouseY< e. pageY){
+      BY = bottomY+Math.abs(mY);
+      console.log('down' + Math.abs(mY));
+    }else{
+      BY = bottomY+ (-Math.abs(mY));
+      console.log('top' + (-Math.abs(mY)));
+    }
+
     if(BY>Math.abs(ta.y)+200){
       BY = Math.abs(ta.y)+200
     }
@@ -165,7 +173,7 @@
   var taNum = new createjs.Bitmap('num.png');
   var numOffset = [
     {
-      x: 0, y: 0
+      x: 1, y: 0
     },
     {
       x: 101.6, y: 0
@@ -180,16 +188,16 @@
       x: 25.4, y: 30
     },
     {
-      x: 76.2, y: 0
+      x: 78, y: 0
     },
     {
-      x: 25.4, y: 0
+      x: 28, y: 0
     },
     {
       x: 76.2, y: 30
     },
     {
-      x: 50.8, y: 0
+      x: 54, y: 0
     },
     {
       x: 0, y: 30
@@ -198,7 +206,7 @@
 //插入塔
   var ta, i, s, numLength, numLengthOffset, numObj, numberOffset, l;
 
-  for (i = 0; i < 20; i++) {
+  for (i = 0; i < 100; i++) {
     ta = stage.getSourceRect(common, 123, 354, 466, 105);
     stage.addChildToContainer(ta, 'bottom', 0);
     ta.x = 9 * stage.multiple;
@@ -209,7 +217,7 @@
     for (l = 0; l < numLength; l++) {
       numLengthOffset = numOffset[s[l]];
       numObj = stage.getSourceRect(taNum, numLengthOffset.x, numLengthOffset.y, 25.4, 30);
-      numObj.x = (numberOffset + (l * 25.4)) * stage.multiple;
+      numObj.x = (numberOffset + (l * 35)) * stage.multiple;
       numObj.y = ta.y + 35 * stage.multiple;
       numObj.scaleX = numObj.scaleY = 1.5 * stage.multiple;
       stage.addChildToContainer(numObj, 'bottom', 99999);
