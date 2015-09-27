@@ -116,9 +116,10 @@
   //生成场景
   stage = new stage(canvas);
   //监听随时更新场景事件
-  createjs.Ticker.addEventListener('tick', stage.Stage);
+  createjs.Ticker.setFPS(60);
   //引入公用图片
   var common = new createjs.Bitmap('common.png');
+  var character = new createjs.Bitmap('character.png');
 
   //底层容器,顶部容器,底部容器
   stage.createContainer(['bottom', 'top', 'down']);
@@ -224,6 +225,41 @@
     }
     ta.scaleX = ta.scaleY = stage.multiple;
   }
+
+
+
+  //TODO 士兵
+
+  var soldier = new createjs.SpriteSheet({
+    "images": ['character.png'],
+    "frames": {
+      'width': 30.7,
+      'height': 33.57,
+      'count':112,
+    },
+    'animations':{
+      's':{
+        frames: [16,17,45],
+        speed: 0.2
+      }
+    }
+  });
+
+var g = new createjs.Sprite(soldier,'s');
+  g.y = (mapFg.y - (42 * stage.multiple) ) ;
+  g.x = 395 * stage.multiple;
+  g.scaleX = g.scaleY = stage.multiple;
+  stage.addChildToContainer(g,'bottom',123);
+  createjs.Ticker.addEventListener('tick', function(e){
+    g.x--;
+    if(g.x<(55 * stage.multiple)){
+      g.x = 395 * stage.multiple;
+    }
+    stage.Stage.update(e)
+  });
+
+
+
   //TODO top
   //设置top x位置
   stage.topContainer.x = guide;
