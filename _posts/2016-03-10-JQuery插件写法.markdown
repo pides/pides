@@ -1,0 +1,34 @@
+---
+layout: post
+title:  "JQuery插件写法"
+date:   2016-03-10 16:44:00 +0800
+categories: jekyll update
+---
+>##### 前言
+
+对于JavaScript，我还是算是一个入门级别的，希望大家多给点意，谢谢！
+
+>##### 正文
+
+现在JQuery，在web项目中是几乎是必不可少的JavaScript库，那么现在让我们来学习下它的插件写法吧。先写一个简单的例子吧。
+
+```js
+  $.fn.alert = function(msg){
+    alert(msg);
+  }
+  //调用方式
+  $.alert(666)
+```
+ok，这就是一个非常简单的JQuery插件写法。那么什么是$.fn呢?
+
+> JQuery.fn
+
+$.fn也就是JQuery.fn它究竟是个什么东西呢。我们可以看看JQuery的源码。
+
+```js
+jQuery.fn = jQuery.prototype = {
+  //code
+}
+```
+
+没错。$.fn也就是JQuery对象的原型
