@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "JQuery插件写法"
-date:   2016-03-10 16:44:00 +0800
+title:  "jQuery插件写法"
+date:   2016-03-10 23:00:00 +0800
 categories: jekyll update
 ---
 >##### 前言
@@ -10,20 +10,20 @@ categories: jekyll update
 
 >##### 正文
 
-现在JQuery，在web项目中是几乎是必不可少的JavaScript库，那么现在让我们来学习下它的插件写法吧。先写一个简单的例子吧。
+现在jQuery，在web项目中是几乎是必不可少的`JavaScript库`，那么现在让我们来学习下它的插件写法吧。先写一个简单的例子吧。
 
 ```js
   $.fn.alert = function(msg){
     alert(msg);
   }
   //调用方式
-  $.alert(666)
+  $('button').alert(666)
 ```
-ok，这就是一个非常简单的JQuery插件写法。那么什么是$.fn呢?
+ok，这就是一个非常简单的jQuery插件写法。那么什么是$.fn呢?
 
-> JQuery.fn
+>##### jQuery.fn
 
-$.fn也就是JQuery.fn它究竟是个什么东西呢。我们可以看看JQuery的源码。
+$.fn也就是jQuery.fn它究竟是个什么东西呢。我们可以看看jQuery的源码。
 
 ```js
 jQuery.fn = jQuery.prototype = {
@@ -31,4 +31,74 @@ jQuery.fn = jQuery.prototype = {
 }
 ```
 
-没错。$.fn也就是JQuery对象的原型
+没错。$.fn也就是`jQuery对象的原型`
+
+接下来，我们就写一个简单的弹窗插件吧
+
+```js
+!function($){
+  //alert方法
+  var OPTIONS = 'options';
+
+  //判断是否是方法
+  function isFunc(fn){
+    return typeof fn === 'function' ? true : false;
+  }
+
+  $.fn.alert = function(option, parames){
+    var _this = $(this);
+    if(typeof option=='string')){
+        if(!isFunc($.fn.alert.action[option]))return;
+        return $.fn.alert.action[option](_this, parames);
+    }
+    var opt = getOptions(_this);
+    if(opt){
+      _this.data(OPTIONS,$.extent({},opt, option))
+    }else{
+      $.extent(_this.data(OPTIONS), defaluts, option)
+    }
+    //初始化
+    init(_this);
+  }
+
+  function init(el){
+    //判断隐藏没
+      if(!el.is(":hidden")){
+        hideAlert(el);
+      }
+  }
+  //相关动作
+  $.fn.alert.action = {
+    //写两个方法用于控制弹窗的显示跟隐藏
+    show: function(el){
+      return showAlert(el);
+    },
+    hide: function(el){
+      return hideAlert(el);
+    }
+  }
+
+  //显示弹窗
+  function showAlert(el){
+    var opt = getOptions(el);
+    el.show(opt.speed);
+  }
+
+  //隐藏弹窗
+  function hideAlert(el){
+    var opt = getOptions(el);
+    el.hide(opt.speed);
+  }
+  //获取配置信息
+  function getOptions(el){
+    return el.data(OPTIONS)
+  }
+
+  //初始化配置
+  var defaluts = {
+    speed:0
+  }
+}(window.jQuery)
+```
+
+So. 接下去不知道咋说好了。。果断看代码解决。。
