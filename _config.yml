@@ -8,7 +8,8 @@
 # Site settings
 title: Pides
 email: pides_h@126.com
-description: > # 没口遁。只能这样了。
+description: > # 没口遁。只能这样了.
+
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://pides.github.io" # the base hostname & protocol for your site
 twitter_username: Pides
