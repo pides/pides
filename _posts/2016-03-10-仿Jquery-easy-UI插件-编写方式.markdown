@@ -8,9 +8,17 @@ categories: jekyll update
 
 {% highlight javascript %}
 !function(){
-  $.fn.alert = function(){
-
+  $.fn.alert = function(option,parames){
+      if(tyoeof option == 'string'){
+        $(this).each(function(){
+          $.fn.alert.action\[option](this,parames);
+          })
+        }
+      return this;
   }
-  $.fn.alert
+  $.fn.alert.action = {
+      show: function(){},
+      hide: function(){}  
+  }
 }()
 {% endhighlight %}
