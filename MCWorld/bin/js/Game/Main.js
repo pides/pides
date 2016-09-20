@@ -42,9 +42,10 @@ var Game;
         };
         Main.prototype.onEvent = function () {
             Laya.stage.on("mousedown", this, this.onMouseDown);
+            Laya.stage.on("mouseup", this, this.onMouseUp);
         };
         Main.prototype.onMouseUp = function () {
-            this.mouseDowning = false;
+            this.role.mouseDowning = false;
         };
         Main.prototype.onMouseDown = function () {
             this.role.mouseDowning = true;

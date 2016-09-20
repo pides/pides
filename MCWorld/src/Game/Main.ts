@@ -50,9 +50,8 @@ namespace Game {
              Laya.stage.on("mouseup", this, this.onMouseUp);
         }
         onMouseUp(){
-            this.mouseDowning = false;
+            this.role.mouseDowning = false;
         }
-        private mouseDowning;
         onMouseDown(){
             this.role.mouseDowning = true;
             this.moveRole(this.role);
