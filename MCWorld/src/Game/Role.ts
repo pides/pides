@@ -17,7 +17,6 @@ namespace Game{
                     this.addChild(this.body);
                 }
                 if(!cache){
-                    alert(1)
                     cache = true;
                     Laya.Animation.createFrames(["mcworld/test2.png"], "role_top_stop");
                     Laya.Animation.createFrames(["mcworld/test2.png",'mcworld/test2_2.png'], "role_top_move");
