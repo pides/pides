@@ -47,6 +47,7 @@ namespace Game {
         }
         onEvent(){
             Laya.stage.on("mousedown", this, this.onMouseDown);
+             Laya.stage.on("mouseup", this, this.onMouseUp);
         }
         onMouseUp(){
             this.mouseDowning = false;
@@ -56,7 +57,7 @@ namespace Game {
             this.role.mouseDowning = true;
             this.moveRole(this.role);
             return;
-        }
+        }m
         moveRole(role){
             role.targetPos = [Laya.stage.mouseX,Laya.stage.mouseY];
             var x1 = role.x   // 第一个点的横坐标
