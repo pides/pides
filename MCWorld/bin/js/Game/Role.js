@@ -18,7 +18,7 @@ var Game;
             Role.prototype.init = function () {
                 if (!this.body) {
                     this.body = new Laya.Animation();
-                    this.body.interval = 50;
+                    this.body.interval = 100;
                     this.addChild(this.body);
                 }
                 if (!cache) {
