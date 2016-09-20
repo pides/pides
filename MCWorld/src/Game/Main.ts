@@ -28,33 +28,13 @@ namespace Game {
             Laya.timer.frameLoop(1, this, this.onLoop);
         }
         onLoop(){
-
             if(this.role.moveing){
-                var px = 1,py =1;
-                var x = this.role.targetPos[0],y = this.role.targetPos[1];
-                if(x > y){
-                    px = x / y;
-                }else{
-                    py = x / y;
-                }
-                if(this.role.x != this.role.targetPos[0]){
-                    if(this.role.targetPos[0] > this.role.x){
-                        this.role.x += py;
-                    }else{
-                        this.role.x -= this.bili;
-                    }
-                }
-                if(this.role.y != this.role.targetPos[1]){
-                    if(this.role.targetPos[1] > this.role.y){
-                        this.role.y += this.bili;
-                    }else{
-                        this.role.y -= px;
-                    }
-                }
-                if(this.role.y == this.role.targetPos[1] && this.role.x == this.role.targetPos[0]){
-                    this.role.moveing = false;
-                    this.role.targetPos = [];
-                }
+              let {x,y} = this.role;
+              let targetX = this.role.targetPos[0];
+              let targetY = this.role.targetPos[1];
+              if(x == targetX && y==targetY){
+                  this.role.playAction(this.role.getDirection(),'stop');
+              }
             }
         }
         onEvent(){
@@ -69,9 +49,20 @@ namespace Game {
             var xdiff = x2 - x1;            // 计算两个点的横坐标之差
             var ydiff = y2 - y1;            // 计算两个点的纵坐标之差
             var jl =  Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5);   // 计算两点之间的距离，并将结果返回表单元素
+            if(x1>x2){
+                this.role.playAction("right",'move');
+            }else{
+                this.role.playAction('left','move');
+            }
+            if(x1==x2 && y1>y2){
+                 this.role.playAction('top','move');
+            }
+            if(x1==x2 && y1<y2){
+                this.role.playAction('down','move');
+            }
+            this.role.moveing = true;
             Tween.to(this.role, { x: Laya.stage.mouseX,y :Laya.stage.mouseY}, 10*jl);
             return;
-           
         }
     }
 }

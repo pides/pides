@@ -4,6 +4,7 @@ namespace Game{
         export class Role extends Laya.Sprite{
             private body:Laya.Animation;
             private action:String;
+            private direction:String;
             public moveing:boolean  = false;
             public targetPos:Array<number>;
             constructor(){
@@ -29,12 +30,28 @@ namespace Game{
                 }
                 this.playAction();
             }
-            playAction(action:String = 'down_stop'){
+            /**
+             * 设置当前角色动画
+             */
+            playAction(direction:String = 'down',action:String = 'stop'){
+                this.direction = direction;
                 this.action = action;
-                this.body.play(0, true,  'role_' + action);
+                this.body.play(0, true,  'role_' + direction+ '_' + action);
                 //获取动画大小区域
                 var bound = this.body.getBounds();
                 this.body.pos(-bound.width / 2, -bound.height / 2);
+            }
+            /**
+             * 获取当前角色动作
+             */
+            getAction(){
+                return this.action;
+            }
+            /**
+             * 获取角色当前方向
+             */
+            getDirection(){
+                return this.direction;
             }
         }
         export class RolePool{

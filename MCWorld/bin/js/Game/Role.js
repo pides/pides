@@ -34,13 +34,30 @@ var Game;
                 }
                 this.playAction();
             };
-            Role.prototype.playAction = function (action) {
-                if (action === void 0) { action = 'down_stop'; }
+            /**
+             * 设置当前角色动画
+             */
+            Role.prototype.playAction = function (direction, action) {
+                if (direction === void 0) { direction = 'down'; }
+                if (action === void 0) { action = 'stop'; }
+                this.direction = direction;
                 this.action = action;
-                this.body.play(0, true, 'role_' + action);
+                this.body.play(0, true, 'role_' + direction + '_' + action);
                 //获取动画大小区域
                 var bound = this.body.getBounds();
                 this.body.pos(-bound.width / 2, -bound.height / 2);
+            };
+            /**
+             * 获取当前角色动作
+             */
+            Role.prototype.getAction = function () {
+                return this.action;
+            };
+            /**
+             * 获取角色当前方向
+             */
+            Role.prototype.getDirection = function () {
+                return this.direction;
             };
             return Role;
         }(Laya.Sprite));
