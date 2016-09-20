@@ -8,6 +8,12 @@ var Game;
     var Main = (function () {
         function Main() {
             Laya.init(640, 960, Laya.WebGL);
+            //设置适配模式
+            Laya.stage.scaleMode = "showall";
+            //设置剧中对齐
+            Laya.stage.alignH = "center";
+            //设置横竖屏
+            Laya.stage.screenMode = "vertical";
             Laya.loader.load("res/atlas/mcworld.json", Laya.Handler.create(this, this.onLoaded), null, Laya.Loader.ATLAS);
             Laya.Stat.show(0, 50);
         }
@@ -30,34 +36,44 @@ var Game;
                     this.role.playAction(this.role.getDirection(), 'stop');
                 }
             }
+            if (this.role.mouseDowning) {
+                this.moveRole(this.role);
+            }
         };
         Main.prototype.onEvent = function () {
-            Laya.stage.on("click", this, this.onMouseMove);
+            Laya.stage.on("mousedown", this, this.onMouseDown);
         };
-        Main.prototype.onMouseMove = function (e) {
-            this.role.targetPos = [Laya.stage.mouseX, Laya.stage.mouseY];
-            var x1 = this.role.x; // 第一个点的横坐标
-            var y1 = this.role.y; // 第一个点的纵坐标
+        Main.prototype.onMouseUp = function () {
+            this.mouseDowning = false;
+        };
+        Main.prototype.onMouseDown = function () {
+            this.role.mouseDowning = true;
+            this.moveRole(this.role);
+            return;
+        };
+        Main.prototype.moveRole = function (role) {
+            role.targetPos = [Laya.stage.mouseX, Laya.stage.mouseY];
+            var x1 = role.x; // 第一个点的横坐标
+            var y1 = role.y; // 第一个点的纵坐标
             var x2 = Laya.stage.mouseX; // 第二个点的横坐标
             var y2 = Laya.stage.mouseY; // 第二个点的纵坐标
             var xdiff = x2 - x1; // 计算两个点的横坐标之差
             var ydiff = y2 - y1; // 计算两个点的纵坐标之差
             var jl = Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5); // 计算两点之间的距离，并将结果返回表单元素
             if (x1 > x2) {
-                this.role.playAction("right", 'move');
+                role.playAction("right", 'move');
             }
             else {
-                this.role.playAction('left', 'move');
+                role.playAction('left', 'move');
             }
             if (x1 == x2 && y1 > y2) {
-                this.role.playAction('top', 'move');
+                role.playAction('top', 'move');
             }
             if (x1 == x2 && y1 < y2) {
-                this.role.playAction('down', 'move');
+                role.playAction('down', 'move');
             }
-            this.role.moveing = true;
+            role.moveing = true;
             Tween.to(this.role, { x: Laya.stage.mouseX, y: Laya.stage.mouseY }, 10 * jl);
-            return;
         };
         return Main;
     }());

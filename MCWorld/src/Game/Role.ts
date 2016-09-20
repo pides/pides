@@ -5,8 +5,10 @@ namespace Game{
             private body:Laya.Animation;
             private action:String;
             private direction:String;
+            public mouseDowning:Boolean;
             public moveing:boolean  = false;
             public targetPos:Array<number>;
+
             constructor(){
                 super();
                 this.init();
