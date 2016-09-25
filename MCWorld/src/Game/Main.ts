@@ -10,6 +10,8 @@ namespace Game {
         private role:Game.Role.Role;
         private rolePool: Game.Role.RolePool;
         private bili;
+        private Ctrl;
+        private CtrlBtn;
         constructor()
         {
             Laya.init(960,640,Laya.WebGL);
@@ -30,54 +32,54 @@ namespace Game {
         }
         onLoaded(){
             // this.system = new Game.System();
-            var Ctrl = new Laya.Sprite();
+            this.Ctrl = new Laya.Sprite();
             var h = Laya.stage.height;
-            Ctrl.y = h - 100;
-            Ctrl.x = 100
-            Ctrl.zOrder = 10;
-            Ctrl.graphics.alpha(0.3);
-            Ctrl.graphics.drawCircle(0, 0, 50, "#000000");
-            Ctrl.width = 100;
-            Ctrl.height = 100;
-            var CtrlBtn = new Laya.Sprite(); 
-            CtrlBtn.width = 50;
-            CtrlBtn.height = 50;
-            CtrlBtn.graphics.alpha(0.5);
-            CtrlBtn.x = CtrlBtn.y = -25;
-            CtrlBtn.graphics.drawCircle(25, 25, 25, "#ffffff"); 
-            CtrlBtn.mouseEnabled = true;
-            Ctrl.mouseEnabled = true;
-            Ctrl.addChild(CtrlBtn);
+            this.Ctrl.y = h - 100;
+            this.Ctrl.x = 100
+            this.Ctrl.zOrder = 10;
+            this.Ctrl.graphics.alpha(0.3);
+            this.Ctrl.graphics.drawCircle(0, 0, 50, "#000000");
+            this.Ctrl.width = 100;
+            this.Ctrl.height = 100;
+            this.CtrlBtn = new Laya.Sprite(); 
+            this.CtrlBtn.width = 50;
+            this.CtrlBtn.height = 50;
+            this.CtrlBtn.graphics.alpha(0.5);
+            this.CtrlBtn.x = this.CtrlBtn.y = -25;
+            this.CtrlBtn.graphics.drawCircle(25, 25, 25, "#ffffff"); 
+            this.CtrlBtn.mouseEnabled = true;
+            this.Ctrl.mouseEnabled = true;
+            this.Ctrl.addChild(this.CtrlBtn);
             var Rectangle = laya.maths.Rectangle;
 		    var dragRegion = new Rectangle(-25, -25, 0, 0);
-            Laya.stage.addChild(Ctrl);
-            var flag = false;
+            Laya.stage.addChild(this.Ctrl);
+            this.CtrlBtn.flag = false;
             var x = -25,y = -25;
-            CtrlBtn.on(Laya.Event.MOUSE_DOWN,this,function(e){
+            this.CtrlBtn.on(Laya.Event.MOUSE_DOWN,this,function(e){
                 if(!x)x = e.nativeEvent.layerX;
                 if(!y)y = e.nativeEvent.layerY;
-                flag = true;
-                CtrlBtn.startDrag(dragRegion, true, 100);
+                this.CtrlBtn.flag = true;
+                this.CtrlBtn.startDrag(dragRegion, true, 100);
             });
-            CtrlBtn.on(Laya.Event.MOUSE_MOVE,this,function(e){
-                console.log(1);
-                if(flag){
-                    var xv = e.nativeEvent.layerX;
-                    var yv = e.nativeEvent.layerY;
-                    if(x>xv){
-                        this.role.x--;
-                    }else if(x<xv){
-                        this.role.x++;
-                    }
-                    if(y>yv){
-                        this.role.y--;
-                    }else if(y<yv){
-                        this.role.y++;
-                    }
-                }
-            });
-            CtrlBtn.on(Laya.Event.MOUSE_UP,this,function(e){
-                flag = false;
+            // CtrlBtn.on(Laya.Event.MOUSE_MOVE,this,function(e){
+            //     console.log(1);
+            //     if(flag){
+            //         var xv = e.nativeEvent.layerX;
+            //         var yv = e.nativeEvent.layerY;
+            //         if(x>xv){
+            //             this.role.x--;
+            //         }else if(x<xv){
+            //             this.role.x++;
+            //         }
+            //         if(y>yv){
+            //             this.role.y--;
+            //         }else if(y<yv){
+            //             this.role.y++;
+            //         }
+            //     }
+            // });
+            this.CtrlBtn.on(Laya.Event.MOUSE_UP,this,function(e){
+                this.CtrlBtn.flag = false;
             });
             this.rolePool = new Game.Role.RolePool();
            
@@ -86,19 +88,24 @@ namespace Game {
             this.bg.addChild(this.role);
             Laya.stage.addChild(this.bg);
             // this.onEvent();
-            // Laya.timer.frameLoop(1, this, this.onLoop);
+            Laya.timer.frameLoop(1, this, this.onLoop);
         }
         onLoop(){
-            if(this.role.moveing){
-              let {x,y} = this.role;
-              let targetX = this.role.targetPos[0];
-              let targetY = this.role.targetPos[1];
-              if(x == targetX && y==targetY){
-                  this.role.playAction(this.role.getDirection(),'stop');
-              }
+            if(this.CtrlBtn.flag){
+            var xv = this.CtrlBtn.x;
+            var yv = this.CtrlBtn.y;
+            if(yv!==-25 || xv !== -25){
+                if(-25>xv){
+                    this.role.x--;
+                }else if(-25<xv){
+                    this.role.x++;
+                }
+                if(-25>yv){
+                    this.role.y--;
+                }else if(-25<yv){
+                    this.role.y++;
+                }
             }
-            if(this.role.mouseDowning){
-                this.moveRole(this.role);
             }
         }
         onEvent(){
