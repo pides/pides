@@ -51,20 +51,40 @@ namespace Game {
             var Rectangle = laya.maths.Rectangle;
 		    var dragRegion = new Rectangle(-25, -25, 0, 0);
             Laya.stage.addChild(Ctrl);
+            var flag = false;
+            var x = -25,y = -25;
             CtrlBtn.on(Laya.Event.MOUSE_DOWN,this,function(e){
-                console.log(CtrlBtn.x,CtrlBtn.y);
+                if(!x)x = e.nativeEvent.layerX;
+                if(!y)y = e.nativeEvent.layerY;
+                flag = true;
                 CtrlBtn.startDrag(dragRegion, true, 100);
             });
             CtrlBtn.on(Laya.Event.MOUSE_MOVE,this,function(e){
-                console.log(e);
+                console.log(1);
+                if(flag){
+                    var xv = e.nativeEvent.layerX;
+                    var yv = e.nativeEvent.layerY;
+                    if(x>xv){
+                        this.role.x--;
+                    }else if(x<xv){
+                        this.role.x++;
+                    }
+                    if(y>yv){
+                        this.role.y--;
+                    }else if(y<yv){
+                        this.role.y++;
+                    }
+                }
             });
-            
-            // this.rolePool = new Game.Role.RolePool();
+            CtrlBtn.on(Laya.Event.MOUSE_UP,this,function(e){
+                flag = false;
+            });
+            this.rolePool = new Game.Role.RolePool();
            
-            // this.role = new Game.Role.Role();
-            // this.role.pos(240, 700);
-            // this.bg.addChild(this.role);
-            // Laya.stage.addChild(this.bg);
+            this.role = new Game.Role.Role();
+            this.role.pos(240, 300);
+            this.bg.addChild(this.role);
+            Laya.stage.addChild(this.bg);
             // this.onEvent();
             // Laya.timer.frameLoop(1, this, this.onLoop);
         }
