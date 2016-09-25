@@ -12,25 +12,61 @@ namespace Game {
         private bili;
         constructor()
         {
-            Laya.init(640,960,Laya.WebGL);
+            Laya.init(960,640,Laya.WebGL);
             //设置适配模式
             Laya.stage.scaleMode = "showall";
             //设置剧中对齐
             Laya.stage.alignH = "center";
             //设置横竖屏
-            Laya.stage.screenMode = "vertical";
-            Laya.loader.load("res/atlas/mcworld.json", Laya.Handler.create(this, this.onLoaded), null, Laya.Loader.ATLAS);
+            Laya.stage.screenMode = Laya.Stage.SCREEN_HORIZONTAL;
+            
+            Laya.loader.load("res/tiledMap/back.json");
+            Laya.loader.load("res/atlas/mcworld.json", Laya.Handler.create(this, this.onLoadBackGround), null, Laya.Loader.ATLAS);
             Laya.Stat.show(0 ,50);
+            
+        }
+        onLoadBackGround(){
+            this.bg = new Game.BackGround(this,this.onLoaded);
         }
         onLoaded(){
-            this.system = new Game.System();
-            this.bg = new Game.BackGround();
-            this.rolePool = new Game.Role.RolePool();
-            this.role = new Game.Role.Role();
-            this.role.pos(240, 700);
-            Laya.stage.addChild(this.role);
-            this.onEvent();
-            Laya.timer.frameLoop(1, this, this.onLoop);
+            // this.system = new Game.System();
+            var Ctrl = new Laya.Sprite();
+            var h = Laya.stage.height;
+            Ctrl.y = h - 100;
+            Ctrl.x = 100
+            Ctrl.zOrder = 10;
+            Ctrl.graphics.alpha(0.3);
+            Ctrl.graphics.drawCircle(0, 0, 50, "#000000");
+            Ctrl.width = 100;
+            Ctrl.height = 100;
+            var CtrlBtn = new Laya.Sprite(); 
+            CtrlBtn.width = 50;
+            CtrlBtn.height = 50;
+            CtrlBtn.graphics.alpha(0.5);
+            CtrlBtn.x = CtrlBtn.y = -25;
+            CtrlBtn.graphics.drawCircle(25, 25, 25, "#ffffff"); 
+            CtrlBtn.mouseEnabled = true;
+            Ctrl.mouseEnabled = true;
+            Ctrl.addChild(CtrlBtn);
+            var Rectangle = laya.maths.Rectangle;
+		    var dragRegion = new Rectangle(-25, -25, 0, 0);
+            Laya.stage.addChild(Ctrl);
+            CtrlBtn.on(Laya.Event.MOUSE_DOWN,this,function(e){
+                console.log(CtrlBtn.x,CtrlBtn.y);
+                CtrlBtn.startDrag(dragRegion, true, 100);
+            });
+            CtrlBtn.on(Laya.Event.MOUSE_MOVE,this,function(e){
+                console.log(e);
+            });
+            
+            // this.rolePool = new Game.Role.RolePool();
+           
+            // this.role = new Game.Role.Role();
+            // this.role.pos(240, 700);
+            // this.bg.addChild(this.role);
+            // Laya.stage.addChild(this.bg);
+            // this.onEvent();
+            // Laya.timer.frameLoop(1, this, this.onLoop);
         }
         onLoop(){
             if(this.role.moveing){
@@ -47,15 +83,17 @@ namespace Game {
         }
         onEvent(){
             Laya.stage.on("mousedown", this, this.onMouseDown);
-             Laya.stage.on("mouseup", this, this.onMouseUp);
+            //  Laya.stage.on("mouseup", this, this.onMouseUp);
         }
         onMouseUp(){
             this.role.mouseDowning = false;
         }
-        onMouseDown(){
-            this.role.mouseDowning = true;
-            this.moveRole(this.role);
-            return;
+        onMouseDown(e){
+            var target = e.target;
+            console.log(target);
+            // this.role.mouseDowning = true;
+            // this.moveRole(this.role);
+            // return;
         }m
         moveRole(role){
             role.targetPos = [Laya.stage.mouseX,Laya.stage.mouseY];
@@ -66,17 +104,12 @@ namespace Game {
             var xdiff = x2 - x1;            // 计算两个点的横坐标之差
             var ydiff = y2 - y1;            // 计算两个点的纵坐标之差
             var jl =  Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5);   // 计算两点之间的距离，并将结果返回表单元素
-            if(x1>x2){
-                role.playAction("right",'move');
+            var n = Math.abs(x1-x2);
+            if(n<30){
+                y1>y2 ? role.playAction('top','move') : role.playAction('down','move');
             }else{
-                role.playAction('left','move');
-            }
-            if(x1==x2 && y1>y2){
-                 role.playAction('top','move');
-            }
-            if(x1==x2 && y1<y2){
-                role.playAction('down','move');
-            }
+                x1>x2 ? role.playAction("right",'move') : role.playAction('left','move');
+            } 
             role.moveing = true;
             Tween.to(this.role, { x: Laya.stage.mouseX,y :Laya.stage.mouseY}, 10*jl);
         }

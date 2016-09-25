@@ -21,14 +21,14 @@ namespace Game{
                 }
                 if(!cache){
                     cache = true;
-                    Laya.Animation.createFrames(["mcworld/test2.png"], "role_top_stop");
-                    Laya.Animation.createFrames(["mcworld/test2.png",'mcworld/test2_2.png'], "role_top_move");
-                    Laya.Animation.createFrames(["mcworld/test1.png"], "role_down_stop");
-                    Laya.Animation.createFrames(["mcworld/test1.png",'mcworld/test1_2.png'], "role_down_move");
-                    Laya.Animation.createFrames(["mcworld/test3.png"], "role_left_stop");
-                    Laya.Animation.createFrames(["mcworld/test3.png","mcworld/test3_2.png"], "role_left_move");
-                    Laya.Animation.createFrames(["mcworld/test4.png"], "role_right_stop");
-                    Laya.Animation.createFrames(["mcworld/test4.png","mcworld/test4_2.png"], "role_right_move");
+                    Laya.Animation.createFrames(["mcworld/role2_1.png"], "role_top_stop");
+                    Laya.Animation.createFrames(["mcworld/role2_2.png",'mcworld/role2_3.png'], "role_top_move");
+                    Laya.Animation.createFrames(["mcworld/role1_1.png"], "role_down_stop");
+                    Laya.Animation.createFrames(["mcworld/role1_2.png",'mcworld/role1_3.png'], "role_down_move");
+                    Laya.Animation.createFrames(["mcworld/role3_1.png"], "role_right_stop");
+                    Laya.Animation.createFrames(["mcworld/role3_2.png","mcworld/role3_3.png"], "role_right_move");
+                    Laya.Animation.createFrames(["mcworld/role4_1.png"], "role_left_stop");
+                    Laya.Animation.createFrames(["mcworld/role4_2.png","mcworld/role4_3.png"], "role_left_move");
                 }
                 this.playAction();
             }
@@ -36,8 +36,13 @@ namespace Game{
              * 设置当前角色动画
              */
             playAction(direction:String = 'down',action:String = 'stop'){
+                if(this.direction == direction && this.action == action){
+                    return;
+                }
                 this.direction = direction;
+                console.log(direction);
                 this.action = action;
+                console.log(action);
                 this.body.play(0, true,  'role_' + direction+ '_' + action);
                 //获取动画大小区域
                 var bound = this.body.getBounds();

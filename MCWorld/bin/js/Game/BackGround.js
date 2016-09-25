@@ -7,9 +7,15 @@ var Game;
 (function (Game) {
     var BackGround = (function (_super) {
         __extends(BackGround, _super);
-        function BackGround() {
+        function BackGround(caller, callback) {
             _super.call(this);
+            this.create(caller, callback);
+            this.zOrder = 1;
         }
+        BackGround.prototype.create = function (caller, callback) {
+            this.tiledMap = new laya.map.TiledMap();
+            this.tiledMap.createMap("res/tiledMap/back.json", new laya.maths.Rectangle(0, 0, Laya.stage.width, Laya.stage.height), new Laya.Handler(caller, callback));
+        };
         return BackGround;
     }(Laya.Sprite));
     Game.BackGround = BackGround;
